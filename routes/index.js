@@ -1,5 +1,7 @@
 const express = require('express');
 const router = express.Router();
+// Destructure methods from the index controller
+const {postRegister} = require("../controllers/index")
 
 /* GET home page. */
 router.get('/', (req, res, next)=> {
@@ -14,9 +16,7 @@ router.get('/register', (req, res, next)=> {
 
 
 /* Post register user /register */
-router.post('/register', (req, res, next)=> {
-  res.send("Registration user");
-});
+router.post('/register', postRegister);
 
 
 /* GET login page /register */

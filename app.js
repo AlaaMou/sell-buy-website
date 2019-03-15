@@ -5,18 +5,35 @@ const cookieParser = require('cookie-parser');
 
 const logger = require('morgan');
 
+// Mongoose
+const mongoose = require("mongoose");
+var db = mongoose.connection;
+db.on('error', console.error.bind(console, 'connection error:'));
+db.once('open', function() {
+  console.log("Database is connected ...")
+});
+
+const session = require("express-session")
+const passport = require("passport");
+const localStrategy = require("passport-local");
+const passportLocalMonoose = require("passport-local-mongoose");
+
+
+// Models
+const Post   = require("./models/post");
+const User   = require("./models/user")
+const Review = require("./models/review");
+
 // Routes
 const indexRouter   = require('./routes/index');
 const postRouter    = require("./routes/posts");
 const reviewRouter  = require("./routes/reviews");
 
-// Models
-var Review = require("./models/review")
-var Post   = require("./models/post")
-var User   = require("./models/user")
-
-
 const app = express();
+
+
+// Connect to the database
+mongoose.connect('mongodb://localhost/travelp');
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
@@ -28,7 +45,21 @@ app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
-// 
+// Configure passport and sessions
+app.use(session({
+  secret: 'keyboard cat',
+  resave: false,
+  saveUninitialized: true,
+}))
+
+app.use(passport.initialize());
+app.use(passport.session());
+
+passport.use(User.createStrategy());
+passport.serializeUser(User.serializeUser());
+passport.deserializeUser(User.deserializeUser());
+
+// Mount Routes
 app.use('/', indexRouter);
 app.use('/posts', postRouter);
 app.use('/posts/:id/reviews', reviewRouter);

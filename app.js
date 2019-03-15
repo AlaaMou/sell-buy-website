@@ -1,21 +1,22 @@
-const createError = require('http-errors');
-const express = require('express');
-const path = require('path');
+const createError  = require('http-errors');
+const express      = require('express');
+const path         = require('path');
 const cookieParser = require('cookie-parser');
+const bodyParser   = require('body-parser')
 
 const logger = require('morgan');
 
 // Mongoose
 const mongoose = require("mongoose");
-var db = mongoose.connection;
+const db       = mongoose.connection;
 db.on('error', console.error.bind(console, 'connection error:'));
 db.once('open', function() {
   console.log("Database is connected ...")
 });
 
-const session = require("express-session")
-const passport = require("passport");
-const localStrategy = require("passport-local");
+const session              = require("express-session")
+const passport             = require("passport");
+const localStrategy        = require("passport-local");
 const passportLocalMonoose = require("passport-local-mongoose");
 
 
@@ -29,11 +30,12 @@ const indexRouter   = require('./routes/index');
 const postRouter    = require("./routes/posts");
 const reviewRouter  = require("./routes/reviews");
 
-const app = express();
 
+const app = express();
 
 // Connect to the database
 mongoose.connect('mongodb://localhost/travelp');
+app.use(bodyParser.urlencoded({ extended: true }))
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
@@ -41,7 +43,7 @@ app.set('view engine', 'ejs');
 
 app.use(logger('dev'));
 app.use(express.json());
-app.use(express.urlencoded({ extended: false }));
+app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 

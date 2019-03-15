@@ -3,12 +3,12 @@ const router = express.Router();
 
 /* GET posts index /posts */
 router.get('/', (req, res, next)=> {
-  res.send("POSTS HOME PAGE")
+  res.render("posts/index")
 });
 
 /* GET new post /posts/new */
 router.get('/new', (req, res, next)=> {
-  res.send("New Post")
+   res.render("posts/new")
 });
 
 /* POST create post /posts */
@@ -18,12 +18,12 @@ router.post('/', (req, res, next)=> {
 
 /* GET show post /posts/:id */
 router.get('/:id', (req, res, next)=> {
-  res.send("Show post")
+   res.render("posts/show")
 });
 
 /* GET edit post  /posts/:id/edit */
 router.get('/:id/edit', (req, res, next)=> {
-  res.send("Edit Post")
+  res.render("posts/edit")
 });
 
 /* Put  update post  /posts/:id */

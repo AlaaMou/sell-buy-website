@@ -2,6 +2,7 @@ require('dotenv').config()
 
 const createError  = require('http-errors');
 const express      = require('express');
+const engine       = require('ejs-mate');
 const path         = require('path');
 const cookieParser = require('cookie-parser');
 const bodyParser   = require('body-parser');
@@ -53,6 +54,8 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use(methodOverride('_method'))
 
 
+// use ejs-locals for all ejs templates:
+app.engine('ejs', engine);
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'ejs');

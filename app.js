@@ -1,8 +1,12 @@
+require('dotenv').config()
+
 const createError  = require('http-errors');
 const express      = require('express');
 const path         = require('path');
 const cookieParser = require('cookie-parser');
-const bodyParser   = require('body-parser')
+const bodyParser   = require('body-parser');
+const methodOverride = require('method-override');
+
 
 const logger = require('morgan');
 
@@ -33,9 +37,21 @@ const reviewRouter  = require("./routes/reviews");
 
 const app = express();
 
+app.use(function(req,res,next){
+  req.user = {
+    username : "Alaa"
+  }
+  res.locals.currentUSer = req.user;
+  next();
+})
+
+
+
 // Connect to the database
-mongoose.connect('mongodb://localhost/travelp');
-app.use(bodyParser.urlencoded({ extended: true }))
+mongoose.connect('mongodb://localhost/travelp', { useNewUrlParser: true } );
+app.use(bodyParser.urlencoded({ extended: true }));
+app.use(methodOverride('_method'))
+
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
@@ -74,6 +90,7 @@ app.use(function(req, res, next) {
 // error handler
 app.use(function(err, req, res, next) {
   // set locals, only providing error in development
+  res.locals.currentUSer = req.user;
   res.locals.message = err.message;
   res.locals.error = req.app.get('env') === 'development' ? err : {};
 

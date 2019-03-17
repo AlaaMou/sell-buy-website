@@ -3,11 +3,85 @@
 
  <div class="jumbotron rounded-0 bg-dark text-light mb-0">
    <div class="container">
-     <h1>Edit Post Form</h1>
+     <h1>Edit : <%= post.title %></h1>
    </div>
  </div>
 
+<div class="container my-5">
+ <form action="/posts/<%= post._id %>?_method=PUT" method="POST" id="editForm" enctype="multipart/form-data">
+   
+   <div class="container">
+     <div class="row justify-content-center">
+      <% post.images.forEach(function(image, i){ %>
+      <div class="col-lg-4">
+         <img class="img-fluid" src="<%= image.url %>">
+         <label for="image<%= i %>"> Delete?</label>
+         <input id="image<%= i %>" type="checkbox" class="imageDeleteCheckBox" name="deleteImages[]" value="<%= image.public_id %>">
+      </div>
+      <% }) %>
+     </div>
+    </div>
+  
+  <div class="form-group">
+    <label for="title">Title</label>
+    <input type="text" class="form-control" id="title" value="<%= post.title %>" name="post[title]">
+  </div>
+  
+  <div class="form-group">
+    <label for="condition">Condition</label>
+    <input type="text" class="form-control" id="title" value="<%= post.condition %>" name="post[condition]">
+  </div>
+  
+  <div class="form-group">
+    <label for="title">Price</label>
+    <input type="text" class="form-control" id="price" value="<%= post.price %>" name="post[price]">
+  </div>
+  
+  <div class="form-group">
+    <label for="location">Location</label>
+    <input type="text" class="form-control" id="location" value="<%= post.location %>" name="post[location]">
+  </div>
+  
+  <div class="form-group">
+    <label for="location">Images <span class="font-weight-light"> (max 3 images)</span></label>
+    <input type="file" id="imageUpload" class="form-control-file" id="location" placeholder="upload photos of the item" name="images" accept="images/*" multiple>
+  </div>
+  
+  <div class="form-group">
+    <label for="description">Description</label>
+    <textarea class="form-control" id="description" rows="9" name="post[description]"><%= post.description %></textarea>
+  </div>
+  
 
+  <button type="submit" class="btn btn-primary">update</button>
+</form>
+</div>
+
+<!-- Client side handling for image uplods in edit form  -->
+<script>
+  // select the edit form
+  let editForm =  document.getElementById('editForm');
+  // add listener to the edit form
+  editForm.addEventListener('submit', function(event){
+    
+  // find length of uploaded images
+  let imageUploads = document.getElementById('imageUpload').files.length;
+  // find total number of exisitng images
+  let exisitngImages = document.querySelectorAll('.imageDeleteCheckBox').length;
+  // find total number of potential deletions
+  let imageDeletions = document.querySelectorAll('.imageDeleteCheckBox:checked').length;
+  // find the total number of remaining images
+  let total = exisitngImages - imageDeletions + imageUploads ;
+  // figue our if the form can be submitted or not
+  if(total>3){
+    event.preventDefault();
+    alert((total-3 >1)  ? "You need to delete " + (total-3 )+ " more "  +" images!" : "You need to delete one more image!")
+  }
+  
+  })
+  
+  
+</script>
     
 <% include ../partials/footer %>    
 

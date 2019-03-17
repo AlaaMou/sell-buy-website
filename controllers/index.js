@@ -7,7 +7,7 @@ const passport = require("passport");
 module.exports = {
     // Get index /
     getIndex(req, res, next){
-      res.render('index', {title :"Travelp"})  
+      res.render('index')  
     },
     
     // Get /register

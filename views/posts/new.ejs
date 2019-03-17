@@ -7,7 +7,61 @@
    </div>
  </div>
 
+<div class="container my-5">
+ <form action="/posts" method="POST" enctype="multipart/form-data" id="postForm">
+  
+  <div class="form-group">
+    <label for="title">Title</label>
+    <input type="text" class="form-control" id="title" placeholder="What would you like to sell?" name="post[title]">
+  </div>
+  
+  <div class="form-group">
+    <label for="condition">Condition</label>
+    <input type="text" class="form-control" id="title" placeholder="Used Or New?" name="post[condition]">
+  </div>
+  
+  <div class="form-group">
+    <label for="title">Price ($)</label>
+    <input type="text" class="form-control" id="price" placeholder="price in dollars" name="post[price]">
+  </div>
+  
+  
+  
+  <div class="form-group">
+    <label for="location">Location</label>
+    <input type="text" class="form-control" id="location" placeholder="Enter your current location" name="post[location]">
+  </div>
+  
+  <div class="form-group">
+    <label for="location">Images <span class="font-weight-light"> (max 3 images)</span></label>
+    <input type="file" class="form-control-file" id="imageUpload" placeholder="upload photos of the item" name="images" accept="images/*" multiple>
+  </div>
+  
+  <div class="form-group">
+    <label for="description">Description</label>
+    <textarea class="form-control" id="description" rows="9" name="post[description]"><li>Brand : </li></textarea>
+  </div>
+  
 
+  <button type="submit" class="btn btn-primary">Submit</button>
+</form>
+</div>
+
+
+<!-- handle the number of uploads -->
+<script>
+  
+  let postForm = document.getElementById('postForm');
+  postForm.addEventListener('submit', function(event){
+     let imageUploads = document.getElementById('imageUpload').files.length;
+     if(imageUploads > 3){
+       event.preventDefault();
+      alert("You can upload maximum 3 images")
+  }  
+    
+  })
+  
+</script>
     
 <% include ../partials/footer %>    
 

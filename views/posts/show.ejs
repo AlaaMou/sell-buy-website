@@ -3,9 +3,46 @@
 
  <div class="jumbotron rounded-0 bg-dark text-light mb-0">
    <div class="container">
-     <h1>Show Post</h1>
+     <h1><%= post.title %></h1>
    </div>
  </div>
+ 
+ <div class="container my-3">
+ <div class="row justify-content-center">
+
+  <div class="col-lg-8">
+   <div class="card">
+    <h5 class="text-center mt-2"><%= post.title %></h5>
+    <p class="pl-2 font-weight-light">Post on <%= post.created.toDateString() %></p>
+    
+    <div class="container">
+     <div class="row justify-content-center">
+      <% post.images.forEach(function(image){ %>
+      <div class="col-lg-4">
+         <img class="img-fluid" src="<%= image.url %>">
+      </div>
+      <% }) %>
+     </div>
+    </div>
+    
+    
+    <p class="pl-3 mt-3"><strong>Price : </strong><%= post.price %> $ </p>
+    <p class="pl-3"><strong>Condition : </strong><%= post.condition %> </p>
+    <div class="container">
+      <p><strong>Description :</strong> <%- post.description %></p>
+    </div>
+    <div class="container text-center my-3">
+       <a class="btn btn-sm btn-warning" href="/posts/<%= post._id %>/edit">Edit</a>
+       <form class="d-inline" action="/posts/<%= post._id %>?_method=DELETE" method="Post">
+         <button class="btn btn-sm btn-danger">Delete Post</button>
+       </form> 
+    </div>
+    
+   </div>
+  </div>
+ 
+ </div>
+</div>
 
 
     

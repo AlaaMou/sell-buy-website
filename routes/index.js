@@ -2,11 +2,11 @@ const express = require('express');
 const router = express.Router();
 // Destructure methods from the index controller
 const {postRegister, postLogin, getLogout, getLogin, getRegister, getIndex, getProfile} = require("../controllers/index");
-const {errorHandler} = require("../middleware/index");
+const {asyncErrorHandler} = require("../middleware/index");
 
 
 /* GET home page. */
-router.get('/', getIndex);
+router.get('/', asyncErrorHandler(getIndex));
 
 
 /* GET register page /register */
@@ -14,7 +14,7 @@ router.get('/register', getRegister);
 
 
 /* Post register user /register */
-router.post('/register', errorHandler(postRegister));
+router.post('/register', asyncErrorHandler(postRegister));
 
 
 /* GET login page /register */

@@ -1,0 +1,23 @@
+<div class="container my-3">
+ <!-- Add prev button -->
+  <% if(posts.page -1){ %>
+  <a href="/posts?page=<%= posts.page -1 %>">prev</a>
+  <% } %>
+  
+  <!-- Add pages buttons-->
+  <% for(var i=1 ; i <= posts.pages ; i++){ %>
+  <!-- Add styling to the current page -->
+  <% if(posts.page === i){ %>
+     <a class="text-dark font-weight-bold" href="/posts?page=<%=i%>"><u><%= i %></u></a>
+  <% }else{ %>
+     <a href="/posts?page=<%=i%>"><%= i %></a>  
+  <% } %>
+  
+  <% } %>
+  
+  <!-- Add next button -->
+  <% if((posts.pages) - (posts.page)){ %>
+  <a href="/posts?page=<%= posts.page +1 %>">next</a>
+  <% } %>
+  
+</div>

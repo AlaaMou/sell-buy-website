@@ -9,9 +9,11 @@
    </div>
  </div>
 
+<% include ../partials/paginate %>
+
 <div class="container my-3">
  <div class="row justify-content-center">
-  <% posts.forEach(function(post){ %>
+  <% posts.docs.forEach(function(post){ %>
   <div class="col-lg-3 my-3">
    <div class="card">
     <h5 class="text-center mt-2"><%= post.title %></h5>
@@ -29,7 +31,5 @@
  </div>
 </div>
 
-    
-<% layout('layouts/boilerplate') -%>
-
  
+ <% include ../partials/paginate %>

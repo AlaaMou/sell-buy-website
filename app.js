@@ -7,6 +7,8 @@ const path         = require('path');
 const cookieParser = require('cookie-parser');
 const bodyParser   = require('body-parser');
 const methodOverride = require('method-override');
+const flash = require('connect-flash');
+const seeds = require("./seeds");
 
 
 const logger = require('morgan');
@@ -73,12 +75,30 @@ app.use(session({
   saveUninitialized: true,
 }))
 
+// connect-flash 
+app.use(flash());
+
 app.use(passport.initialize());
 app.use(passport.session());
 
 passport.use(User.createStrategy());
 passport.serializeUser(User.serializeUser());
 passport.deserializeUser(User.deserializeUser());
+
+
+
+// Set title and local variables middleware
+app.use(function(req, res, next) {
+  // set default page title
+    res.locals.title = 'Travelp';
+  // set error variable
+    res.locals.error = req.flash('error');
+  // set success variable
+    res.locals.success = req.flash('success')
+  // continue on next function in the middleware chain
+    next();
+})
+
 
 // Mount Routes
 app.use('/', indexRouter);
@@ -99,7 +119,9 @@ app.use(function(err, req, res, next) {
 
   // render the error page
   res.status(err.status || 500);
-  res.render('error');
+  console.log(err)
+  req.flash('error', 'Sorry you have encountered an error')
+  res.redirect('/posts');
 });
 
 module.exports = app;

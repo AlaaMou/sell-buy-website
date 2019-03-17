@@ -7,7 +7,13 @@ const {cloudinary} = require("../cloudinary")
 module.exports = {
     // Posts index
     async getPosts(req, res, next){
-        const posts = await Post.find({});
+        const posts = await Post.paginate({},{
+            page : req.query.page || 1 ,
+            sort:     { created : -1 },
+            limit : 8
+        });
+        // for pagination options
+        posts.page = Number(posts.page)
         res.render("posts/index", {posts})
     },
     
@@ -29,16 +35,16 @@ module.exports = {
       }
             
       const  post = await Post.create(req.body.post);
+         // flash message  
+         req.flash('success', 'New post has been created successfully')
          res.redirect('/posts/' + post._id )    
     },
     // Show Post
     async showPost(req, res, next){
-       try{
+       
             const post = await Post.findById(req.params.id);
-            res.render("posts/show", {post})
-       } catch(err){
-           res.redirect("/")
-       }
+            let   title = post.title;
+            res.render("posts/show", {post, title})
        
     },
     // Edit Post
@@ -88,6 +94,7 @@ module.exports = {
         // Save the updated post to the database
         post.save();
         // redirect to show page
+        req.flash('success', 'Post has been updated successfully')
         res.redirect("/posts/" + post._id)
     },
     // Delete Post
@@ -104,7 +111,8 @@ module.exports = {
         }
         // remove post from database
         await post.remove();
-        
+        // flash message 
+        req.flash('success', 'Post has been deleted successfully')
         res.redirect("/posts")
     }
     

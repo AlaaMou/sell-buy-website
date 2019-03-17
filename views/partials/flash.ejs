@@ -1,0 +1,19 @@
+<% if(error && error.length){ %>
+
+<div class="alert alert-danger" role="alert">
+  <div class="container">
+      <p><%= error %></p>
+  </div>
+</div>
+
+<% } %>
+
+<% if(success && success.length){ %>
+
+<div class="alert alert-success" role="alert">
+  <div class="container">
+      <p><%= success %></p>
+  </div>
+</div>
+
+<% } %>

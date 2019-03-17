@@ -28,7 +28,7 @@ module.exports = {
     
     // Get /login
     getLogin(req, res, next){
-        res.render('login')
+        res.render('login', {title : 'login'})
     },
     
     // POST /login
@@ -45,7 +45,7 @@ module.exports = {
     
     // Get /profile
     getProfile(req, res, next){
-        res.render('profile')
+        res.render('profile', {title : 'Profile'})
     }
     
 }

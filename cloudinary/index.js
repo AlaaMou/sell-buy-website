@@ -7,7 +7,7 @@ cloudinary.config({
 });
 
 
-// multer-storage -cloudinary it allows us to upload the images directly to cloudinary folder through the middleware upload step
+// multer-storage -cloudinary it allows to upload the images directly to cloudinary folder through the middleware upload step
 // there is no need to uploads file to store the images temporarily now
 const cloudinaryStorage = require('multer-storage-cloudinary');
 const storage = cloudinaryStorage({

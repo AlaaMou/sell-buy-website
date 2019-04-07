@@ -4,7 +4,8 @@ const faker = require("faker");
 async function seedPost(req, res, next){
     // remove all existing posts in database
     await Post.remove({})
-    
+  
+  /*
     for(const i of new Array(40)){
          
        const post = {
@@ -26,7 +27,9 @@ async function seedPost(req, res, next){
        
        Post.create(post);
     }
+   */
     console.log("40 new posts created")
+     
 }
 
 module.exports = seedPost;

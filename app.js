@@ -1,17 +1,16 @@
-require('dotenv').config()
+// require('dotenv').config()
 
-const createError  = require('http-errors');
-const express      = require('express');
-const engine       = require('ejs-mate');
-const path         = require('path');
-const cookieParser = require('cookie-parser');
-const bodyParser   = require('body-parser');
+const createError    = require('http-errors');
+const express        = require('express');
+const engine         = require('ejs-mate');
+const favicon        = require('serve-favicon');
+const path           = require('path');
+const cookieParser   = require('cookie-parser');
+const logger         = require('morgan');
+const bodyParser     = require('body-parser');
 const methodOverride = require('method-override');
-const flash = require('connect-flash');
-const seeds = require("./seeds");
-
-
-const logger = require('morgan');
+const flash          = require('connect-flash');
+const seeds          = require("./seeds");
 
 // Mongoose
 const mongoose = require("mongoose");
@@ -40,14 +39,6 @@ const reviewRouter  = require("./routes/reviews");
 
 const app = express();
 
-app.use(function(req,res,next){
-  req.user = {
-    username : "Alaa"
-  }
-  res.locals.currentUSer = req.user;
-  next();
-})
-
 
 
 // Connect to the database
@@ -67,6 +58,7 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
+app.use(favicon(path.join(__dirname, 'public', 'favicon.ico')))
 
 // Configure passport and sessions
 app.use(session({
@@ -78,6 +70,7 @@ app.use(session({
 // connect-flash 
 app.use(flash());
 
+// passport configuration
 app.use(passport.initialize());
 app.use(passport.session());
 
@@ -89,6 +82,8 @@ passport.deserializeUser(User.deserializeUser());
 
 // Set title and local variables middleware
 app.use(function(req, res, next) {
+  // set currentUser equal to req.user
+    res.locals.currentUser = req.user;
   // set default page title
     res.locals.title = 'Travelp';
   // set error variable
@@ -118,10 +113,17 @@ app.use(function(err, req, res, next) {
   res.locals.error = req.app.get('env') === 'development' ? err : {};
 
   // render the error page
-  res.status(err.status || 500);
-  console.log(err)
-  req.flash('error', 'Sorry you have encountered an error')
-  res.redirect('/posts');
+  
+  if(err.message.includes('Cast to ObjectId')){
+    req.flash('error', 'Sorry you have encountered an error')
+  
+  }else if(err.message){ req.flash('error', err.message)
+    
+  } else {
+  req.flash('error', 'Sorry you have encountered an error')  
+  }
+  
+  res.redirect('back');
 });
 
 module.exports = app;

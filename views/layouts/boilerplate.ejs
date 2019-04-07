@@ -1,16 +1,32 @@
 <!doctype html>
 <html lang="en">
   <head>
+    
+    
+    
     <!-- Required meta tags -->
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
     <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <!-- Starability styling-->
+    <link rel="stylesheet" type="text/css" href="/stylesheets/starability-fade.min.css"/>
     <!--  Font awesome library-->
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.2/css/all.css" integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous">
    
+    <!-- Mapbox styles-->
+     <link href="https://fonts.googleapis.com/css?family=Open+Sans" rel="stylesheet">
+     <link href='https://api.tiles.mapbox.com/mapbox-gl-js/v0.53.0/mapbox-gl.css' rel='stylesheet'/>
+     <script src='https://api.tiles.mapbox.com/mapbox-gl-js/v0.53.0/mapbox-gl.js'></script>
+    <!-- jQuery Library -->
+    <script src="https://code.jquery.com/jquery-3.3.1.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
+     <!--Styles css-->
+    <link rel="stylesheet" href="/stylesheets/style.css">
     <title><%= title %></title>
+    <style>
+     
+    </style>
   </head>
   <body>
   <% include ../partials/navbar  %>
@@ -19,7 +35,19 @@
   
   <%- body -%>
   
-  
+    
+    <!-- Start of Footer -->
+    <div class="text-light text-center mb-0 pb-3" style="background:#191515">
+        <p class="font-weight-light pt-5 mb-0">All Rights Reserved | Alaa Moussa 2019 <i class="fas fa-copyright"></i></p>
+        <!--Social Media-->
+        <p class="mt-1">
+          <a class="text-light" href="https://www.facebook.com/alaa.ahmed.moussa" target="_blank" title="facebook"><i class="fab fa-facebook-square"></i></a>
+          <a class="ml-1 text-light" href="https://www.instagram.com/3laamoussa/?hl=en" target="_blank" title="instagram"><i class="fab fa-instagram"></i></a>
+          <a class="ml-1 text-light" href="https://www.linkedin.com/in/alaa-moussa-3483ab77/" target="_blank" title="linkedin"><i class="fab fa-linkedin"></i></a>
+          <a class="ml-1 text-light" href="https://github.com/AlaaMou" target="_blank" title="github"><i class="fab fa-github"></i></a>
+        </p>
+    </div>
+     
     <!-- Optional JavaScript -->
     <!-- jQuery first, then Popper.js, then Bootstrap JS -->
     <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>

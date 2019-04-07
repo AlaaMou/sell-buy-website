@@ -1,20 +1,50 @@
-
+require('dotenv').config()
 const Post       = require("../models/post");
-const {cloudinary} = require("../cloudinary")
-
+const Review     = require("../models/review");
+const {cloudinary} = require("../cloudinary");
+const  mbxGeocoding = require('@mapbox/mapbox-sdk/services/geocoding');
+const  geocodingClient = mbxGeocoding ({ accessToken: process.env.MapBox_TOKEN });
 
 
 module.exports = {
     // Posts index
     async getPosts(req, res, next){
-        const posts = await Post.paginate({},{
+        // handle search if there is req.query.search
+        if(req.query.search){
+            
+        function escapeRegex(text) {
+        return text.replace(/[-[\]{}()*+?.,\\^$|#\s]/g, "\\$&");
+        };
+
+        const regex = new RegExp(escapeRegex(req.query.search), 'gi');
+        const posts = await Post.paginate({"title": regex},{
             page : req.query.page || 1 ,
-            sort:     { created : -1 },
+            sort:     { _id : -1 },
             limit : 8
         });
-        // for pagination options
+        
+        if(posts.docs.length < 1){
+            req.flash('error', 'No match found');
+            res.redirect('/posts')
+        }else{
+            posts.page = Number(posts.page)
+            res.render("posts/index", {posts})
+        }
+        
+        
+        }else{
+        //  Normal loading of the page withour req.query.search
+        const posts = await Post.paginate({},{
+            page : req.query.page || 1 ,
+            sort:     { _id : -1 },
+            limit : 8
+        });
+        // for pagination options and prev/next buttons
         posts.page = Number(posts.page)
         res.render("posts/index", {posts})
+
+        }
+       
     },
     
     // New Post
@@ -24,8 +54,10 @@ module.exports = {
     
     // Create Post
     async createPost(req, res, next){
-      
+       //add author to the post
+       req.body.post.author = req.user._id;
        req.body.post.images = [];
+       
     //   file has been uploaded already to cloudinary by the middleware upload
       for(const file of req.files){
          req.body.post.images.push({
@@ -33,6 +65,14 @@ module.exports = {
              public_id : file.public_id
          })
       }
+    // Add location
+    let response = await geocodingClient.forwardGeocode({
+         query: req.body.post.location,
+         limit: 1
+           })
+        .send();
+        req.body.post.coordinates = response.body.features[0].geometry.coordinates;
+
             
       const  post = await Post.create(req.body.post);
          // flash message  
@@ -42,9 +82,23 @@ module.exports = {
     // Show Post
     async showPost(req, res, next){
        
-            const post = await Post.findById(req.params.id);
+            const post = await Post.findById(req.params.id).populate("author").populate({
+                  path :'reviews',
+                  options : {
+                      sort : {'_id' : -1}
+                  },
+                //   nested population
+                  populate :{
+                      path : 'author',
+                      model : 'User'
+                  }
+                
+            });
+            
+            const floorRating =  post.calculateAvgRating();
+            
             let   title = post.title;
-            res.render("posts/show", {post, title})
+            res.render("posts/show", {post, title, floorRating})
        
     },
     // Edit Post
@@ -75,7 +129,7 @@ module.exports = {
         }
         // Check if there's new images for upload
         if(req.files){
-            // upload images to cloudinary
+            // upload images to cloudinary done by multer-storage-cloudinary
             for(const file of req.files){
             // add images to post.images array
             post.images.push({
@@ -90,6 +144,13 @@ module.exports = {
         post.price = req.body.post.price;
         post.location = req.body.post.location;
         post.description = req.body.post.description;
+        // Maps
+        let response = await geocodingClient.forwardGeocode({
+         query: post.location,
+         limit: 1
+           })
+        .send();
+        post.coordinates = response.body.features[0].geometry.coordinates;
         
         // Save the updated post to the database
         post.save();

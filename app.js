@@ -40,9 +40,9 @@ const reviewRouter  = require("./routes/reviews");
 const app = express();
 
 
-
+mongoose.connect( process.env.DATABASE_URL,  { useNewUrlParser: true });
 // Connect to the database
-mongoose.connect('mongodb://localhost/travelp', { useNewUrlParser: true } );
+// mongoose.connect('mongodb://localhost/travelp', { useNewUrlParser: true } );
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(methodOverride('_method'))
 

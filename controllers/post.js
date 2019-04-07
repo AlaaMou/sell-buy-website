@@ -1,4 +1,4 @@
-require('dotenv').config()
+// require('dotenv').config()
 const Post       = require("../models/post");
 const Review     = require("../models/review");
 const {cloudinary} = require("../cloudinary");

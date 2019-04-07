@@ -30,7 +30,7 @@ module.exports = {
     let user = await User.register(newUser, req.body.password);
     req.login(user, async function(err){
         if(err) return next(err)
-        req.flash('success', 'Hi '+ user.username +', welcome To Travelp')
+        req.flash('success', 'Hi '+ user.username +', Welcome To Travelp')
         res.redirect("/posts")
     })
     

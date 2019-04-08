@@ -63,7 +63,7 @@
        <% if(currentUser){ %>
          <button class="btn btn-sm btn-success new-review-button"  type="button" data-toggle="collapse" data-target="#review-form">Add Review</button>
        <% } %>
-       <a class="btn btn-sm btn-primary" href="#">Buy</a>
+       <a class="btn btn-sm btn-primary" href="#">Contact Seller</a>
        
        <% if(currentUser && post.author.equals(currentUser._id)){ %>
           <a class="btn btn-sm btn-warning" href="/posts/<%= post._id %>/edit">Edit</a>

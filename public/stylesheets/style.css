@@ -4,6 +4,12 @@
  #inner-content{
   padding-top: 8rem;
  }
+ #top-header{
+  background-image: url('../images/trav-elp.jpg');
+  background-repeat: no-repeat;
+  background-position: left;
+  background-size: cover
+ }
  
  #map {
        overflow-x: hidden; 
